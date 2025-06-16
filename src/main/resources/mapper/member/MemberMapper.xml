@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doragaza.driverlocation.member.mapper.MemberMapper">
+    <resultMap id="MemberResultMap" type="com.doragaza.driverlocation.member.domain.Member">
+        <id     property="memberNo" column="m_no" />
+        <result property="memberId" column="m_id"/>
+        <result property="memberPw" column="m_pw"/>
+        <result property="memberName" column="m_name"/>
+        <result property="memberPhone" column="m_phone"/>
+        <result property="memberEmail" column="m_email"/>
+        <result property="memberAuthority" column="m_authority"/>
+        <result property="driverNo" column="d_no" />
+    </resultMap>
+    <!-- 회원가입 -->
+    <insert id="insertMember" parameterType="com.doragaza.driverlocation.member.domain.Member" useGeneratedKeys="true" keyProperty="memberNo">
+    <selectKey resultType="String" keyProperty="memberNo" order="BEFORE">
+        SELECT CONCAT('M', LPAD(IFNULL(MAX(SUBSTRING(m_no, 2)), 0) + 1, 6, '0')) FROM member
+    </selectKey>
+        INSERT INTO member (
+        m_no,
+        m_id,
+        m_pw,
+        m_name,
+        m_phone,
+        m_email
+        ) VALUES (
+        #{memberNo},
+        #{memberId},
+        #{memberPw},
+        #{memberName},
+        #{memberPhone},
+        #{memberEmail}
+        )
+    </insert>
+
+    <!-- 회원정보 d_no 제외-->
+    <select id="getMemberInfo" resultMap="MemberResultMap">
+        SELECT
+        m_no,
+        m_id,
+        m_pw,
+        m_name,
+        m_phone,
+        m_email,
+        m_authority
+        FROM
+        member
+        WHERE
+        m_no = #{memberNo}
+    </select>
+
+</mapper>
