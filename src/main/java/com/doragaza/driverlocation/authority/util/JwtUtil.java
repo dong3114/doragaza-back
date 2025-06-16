@@ -4,7 +4,9 @@ import com.doragaza.driverlocation.authority.config.JwtToken;
 import com.doragaza.driverlocation.member.domain.Member;
 import com.doragaza.driverlocation.member.mapper.MemberMapper;
 import io.jsonwebtoken.*;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
+    @Autowired
     private final JwtToken jwtToken;
     private final MemberMapper memberMapper;
 
@@ -61,7 +64,12 @@ public class JwtUtil {
     public String extractRoleName(String token) {
         return getClaims(token).get("role", String.class);
     }
-
+    /**
+     * roleNumber 추출
+     */
+    public int extractRoleNumber(String token) {
+        return getClaims(token).get("level", Integer.class);
+    }
     /**
      * 토큰의 유효성 검사
      */
@@ -80,7 +88,6 @@ public class JwtUtil {
         }
         return false;
     }
-
     /**
      * 토큰 파싱 공통 메서드
      * @param token
