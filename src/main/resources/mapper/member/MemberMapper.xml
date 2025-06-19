@@ -50,5 +50,34 @@
         WHERE
         m_no = #{memberNo}
     </select>
+    <select id="loginCheck" resultType="int">
+        SELECT
+            1
+        FROM
+            member
+        WHERE
+            m_id = #{memberId} AND m_pw = #{memberPw}
+        LIMIT 1
+    </select>
+    <select id="getMemberId" resultType="String">
+        SELECT
+            m_no
+        FROM
+            member
+        WHERE
+            m_id = #{memberId}
+    </select>
 
+    <select id="findEnterpriseNo" resultType="String">
+        SELECT
+            d.d_no
+        FROM
+            member AS m
+            INNER JOIN
+            driver AS d
+            ON
+            m.m_no = d.m_no
+        WHERE
+            m.m_no = #{memberNo}
+    </select>
 </mapper>

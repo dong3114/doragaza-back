@@ -8,7 +8,8 @@ import lombok.Getter;
 public class GenerateJwtToken {
     private final String token;
     private final String memberNo;
+    private final Integer roleNumber;
+    private final String roleName;
     private final String enterpriseNo;
     private final long expires;
-
 }
