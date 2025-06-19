@@ -14,7 +14,7 @@ public class Member {
     private String memberName;
     private String memberPhone;
     private String memberEmail;
-    private int memberAuthority;
+    private Integer memberAuthority;
 
     // driver 테이블
     private String driverNo;

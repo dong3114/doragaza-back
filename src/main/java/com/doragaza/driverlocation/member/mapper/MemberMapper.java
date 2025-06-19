@@ -13,14 +13,14 @@ public interface MemberMapper {
      * @return 삽입 성공 1, 실패 0
      */
     int insertMember(Member member);
-
     /**
      * 로그인
      */
-    Member login(@Param("memberId") String memberId, @Param("memberPw") String memberPw);
+    Integer loginCheck(@Param("memberId") String memberId, @Param("memberPw") String memberPw);
+    // ID를 통해 회원 번호 조회
+    String getMemberId(@Param("memberId") String memberId);
     Member getMemberInfo(@Param("memberNo") String memberNo);
-
-
+    String findEnterpriseNo(@Param("memberNo") String memberNo);
     /**
      * 회원가입 유효성검증
      */
