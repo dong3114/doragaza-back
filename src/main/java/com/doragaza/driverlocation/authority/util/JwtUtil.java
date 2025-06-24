@@ -20,13 +20,12 @@ public class JwtUtil {
      * role 열거형 권한 정보
      * @return jwtToken
      */
-    public String generateToken(String memberNo, int level, String enterpriseNo){
+    public String generateToken(String memberNo, int level){
         String roleName = RoleName.getRoleName(level);
         return Jwts.builder()
                 .setSubject(memberNo)
                 .claim("level", level)
                 .claim("role", roleName)
-                .claim("enterpriseNo", enterpriseNo)
                 .setIssuer(jwtToken.getIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtToken.getExpiration()))
@@ -42,9 +41,8 @@ public class JwtUtil {
             throw new RuntimeException("토큰이 유효하지 않습니다.");
         }
         String memberNo = extractMemberNo(oldToken);
-        String enterpriseNo = extractEnterpriseNo(oldToken);
         Integer level = extractRoleNumber(oldToken);
-        return generateToken(memberNo, level,enterpriseNo);
+        return generateToken(memberNo, level);
     }
 
     /**
@@ -70,12 +68,6 @@ public class JwtUtil {
      */
     public Integer extractRoleNumber(String token) {
         return getClaims(token).get("level", Integer.class);
-    }
-    /**
-     * enterpriseNo 추출
-     */
-    public String extractEnterpriseNo(String token) {
-        return getClaims(token).get("enterpriseNo", String.class);
     }
     /**
      * 토큰의 유효성 검사

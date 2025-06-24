@@ -50,24 +50,15 @@
         WHERE
         m_no = #{memberNo}
     </select>
-    <select id="loginCheck" resultType="int">
+    <select id="getLoginData" resultType="String">
         SELECT
-            1
+            m_no
         FROM
             member
         WHERE
             m_id = #{memberId} AND m_pw = #{memberPw}
         LIMIT 1
     </select>
-    <select id="getMemberId" resultType="String">
-        SELECT
-            m_no
-        FROM
-            member
-        WHERE
-            m_id = #{memberId}
-    </select>
-
     <select id="findEnterpriseNo" resultType="String">
         SELECT
             d.d_no

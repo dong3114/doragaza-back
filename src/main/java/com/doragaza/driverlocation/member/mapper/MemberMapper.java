@@ -16,9 +16,8 @@ public interface MemberMapper {
     /**
      * 로그인
      */
-    Integer loginCheck(@Param("memberId") String memberId, @Param("memberPw") String memberPw);
     // ID를 통해 회원 번호 조회
-    String getMemberId(@Param("memberId") String memberId);
+    String getLoginData(@Param("memberId") String memberId, String memberPw);
     Member getMemberInfo(@Param("memberNo") String memberNo);
     String findEnterpriseNo(@Param("memberNo") String memberNo);
     /**

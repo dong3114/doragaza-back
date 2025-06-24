@@ -1,9 +1,8 @@
 package com.doragaza.driverlocation.member.service;
 
-import java.util.Map;
+import com.doragaza.driverlocation.member.domain.MemberInfoView;
 
 public interface MemberService {
-    Boolean loginCheck(String memberId, String memberPw);
-    Map<String, Object> findMemberInfo(String memberNo);
-
+    String loginGetMemberNo(String memberId, String memberPw);
+    MemberInfoView findMemberInfo(String memberNo);
 }
