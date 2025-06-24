@@ -1,25 +1,18 @@
 package com.doragaza.driverlocation.authority.util;
 
 import com.doragaza.driverlocation.authority.config.JwtToken;
-import com.doragaza.driverlocation.member.domain.Member;
-import com.doragaza.driverlocation.member.mapper.MemberMapper;
-import com.doragaza.driverlocation.member.service.MemberService;
 import io.jsonwebtoken.*;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
     @Autowired
     private final JwtToken jwtToken;
-    private final MemberService memberService;
 
     /**
      * 토큰 발급 정보
@@ -27,14 +20,13 @@ public class JwtUtil {
      * role 열거형 권한 정보
      * @return jwtToken
      */
-    public String generateToken(String memberNo){
-        Map<String, Object> claims = memberService.findMNumENum(memberNo);
-        String roleName =  RoleName.getRoleName((Integer) claims.get("level"));
+    public String generateToken(String memberNo, int level, String enterpriseNo){
+        String roleName = RoleName.getRoleName(level);
         return Jwts.builder()
                 .setSubject(memberNo)
-                .claim("level", claims.get("level"))
+                .claim("level", level)
                 .claim("role", roleName)
-                .claim("enterpriseNo", claims.get("enterprise"))
+                .claim("enterpriseNo", enterpriseNo)
                 .setIssuer(jwtToken.getIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtToken.getExpiration()))
@@ -50,7 +42,9 @@ public class JwtUtil {
             throw new RuntimeException("토큰이 유효하지 않습니다.");
         }
         String memberNo = extractMemberNo(oldToken);
-        return generateToken(memberNo);
+        String enterpriseNo = extractEnterpriseNo(oldToken);
+        Integer level = extractRoleNumber(oldToken);
+        return generateToken(memberNo, level,enterpriseNo);
     }
 
     /**
