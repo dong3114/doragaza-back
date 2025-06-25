@@ -33,8 +33,17 @@ public class MemberController {
         MemberInfoView member = memberService.findMemberInfo(memberNo);  // ✅ 뷰 객체 사용
         String token = jwtUtil.generateToken(memberNo, member.getMemberAuthority());
 
-        // 여기까지만 구성 (응답 반환 X)
-        return null; // 👈 이후 응답 구성 예정
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "success", false,
+                    "message", "토큰 생성에 실패했습니다. 관리자에게 문의하세요."
+            ));
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("token", token);
+        response.put("member", member);
+        return ResponseEntity.ok(response);
     }
 
 
